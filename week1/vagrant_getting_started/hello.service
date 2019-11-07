@@ -1,0 +1,12 @@
+[Unit]
+Description=hello world demo service
+
+[Service]
+# Type=simple
+# Restart=always
+# RestartSec=1
+User=vagrant
+ExecStart=/usr/bin/java -jar /home/vagrant/hello-spring-boot-0.1.0.jar --spring.config.location=/home/vagrant/test.properties
+
+[Install]
+WantedBy=multi-user.target

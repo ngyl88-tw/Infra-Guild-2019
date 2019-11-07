@@ -1,0 +1,4 @@
+# week1
+brew cask install virtualbox && brew cask install vagrant && brew install ansible
+
+
