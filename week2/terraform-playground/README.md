@@ -10,10 +10,14 @@ Setup your environment variables
     ```
     
 #### Terraform Commands
-`terraform init`
+- `terraform init`
 
-`terraform plan`
+- `terraform plan`
+    - `terraform plan -var-file=../config/default.tfvars -var-file=../config/sensitive.tfvars  -out=./.terraform/plan.tf`
 
-`terraform apply`
+- `terraform apply`
+    - `terraform apply "./.terraform/plan.tf"`
 
-`terraform refresh`: will generate outputs
+- `terraform output`
+
+- `terraform refresh`: update state file (sync with real-world infra), will also generate outputs

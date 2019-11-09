@@ -2,3 +2,5 @@
 
 .terraform/
 **/*.tfstate*
+
+config/sensitive.tfvars

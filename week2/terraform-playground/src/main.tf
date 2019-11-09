@@ -30,6 +30,6 @@ resource "aws_security_group_rule" "allow_ssh" {
   protocol        = "tcp"
   security_group_id = data.aws_security_group.default.id
 
-  cidr_blocks = ["128.106.1.171/32"]
+  cidr_blocks = var.whitelisted_cidrs
   description = "Allow SSH from Office IP"
 }
