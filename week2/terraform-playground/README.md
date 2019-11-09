@@ -17,15 +17,45 @@
     ```
 0. Setup `sensitive.tfvars`.
 ---
+#### Important Notes
+- Existing instances have to be destroyed and recreate whenever addition/modification of provisioner takes place.
+- Use `ps aux | grep hello` to get the user who runs the process
+
+---
 #### Terraform Commands
 - `terraform init`
 
 - `terraform plan`
-    - `terraform plan -var-file=../config/default.tfvars -var-file=../config/sensitive.tfvars  -out=./.terraform/plan.tf`
+    - `terraform plan -var-file=../config/default.tfvars -var-file=../config/sensitive.tfvars -out=terraform.tfplan`
+    - `terraform plan -destroy -var-file=../config/default.tfvars -var-file=../config/sensitive.tfvars -out=terraform.tfplan`
 
 - `terraform apply`
-    - `terraform apply "./.terraform/plan.tf"`
+    - `terraform apply "terraform.tfplan"`
 
 - `terraform output`
 
 - `terraform refresh`: update state file (sync with real-world infra), will also generate outputs
+
+- `terraform destoy`
+---
+#### EC2 Provisioning
+[Provisioners (remote-exec)](https://www.terraform.io/docs/provisioners/remote-exec.html#script-arguments)
+- Provisioners should only be used as a last resort? Why?
+    - can be used to execute scripts on a local or remote machine as part of resource creation or destruction.
+- Mentioned in [main Provisioner page](https://www.terraform.io/docs/provisioners/)
+    - prefer to use that provider functionality rather than a provisioner so that Terraform can be fully aware of the object and properly manage ongoing changes to it.
+    - All `provisioner` support the `when` (`destroy`, run during instance creation by default) and `on_failure` (`continue` or `fail`) meta-arguments.
+    - Creation-time provisioners are only run during creation, not during updating or any other lifecycle.
+    - Destroy-time provisioners to be used with care
+        - If a resource block with a destroy-time provisioner is removed entirely from the configuration, its provisioner configurations are removed along with it and thus the destroy provisioner won't run.
+        - A destroy-time provisioner within a resource that is tainted will not run.
+- alternatives:
+    - cloud-init
+        - automatically run arbitrary scripts and do basic system configuration immediately during the boot process
+        - without the need to access the machine over SSH
+        - can make use of the `user data` or `metadata` if building custom machine images
+        - allow faster boot by avoiding the need for direct network access from Terraform to the new server
+    - HashiCorp Packer
+        - custom image could be used with `user data` so that to pass the necessary information into each instance
+        - instances can register itself with the configuration management server immediately on boot
+        - can avoid the need to accept commands from Terraform

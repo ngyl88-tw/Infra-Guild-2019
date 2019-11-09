@@ -1,5 +1,5 @@
 # Default variable
-key_name="macbook-pro-2018-15-inch"
+provisioner_key_name="infra-guild-week2-provisioner"
 
 # Sensitive variables
 whitelisted_cidrs=[]

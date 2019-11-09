@@ -1,4 +1,4 @@
-variable "key_name" {
+variable "provisioner_key_name" {
   type    = string
 }
 

@@ -1,0 +1,13 @@
+[Unit]
+Description=hello world demo service
+
+[Service]
+# Type=simple
+# Restart=always
+# RestartSec=1
+User=ubuntu
+ExecStart=/usr/bin/java -jar /tmp/init/hello-spring-boot-0.1.0.jar --spring.config.location=/home/ubuntu/test.properties
+SuccessExitStatus=143   # The Java program exit after receiving a SIGTERM signal (external signal)
+
+[Install]
+WantedBy=multi-user.target
