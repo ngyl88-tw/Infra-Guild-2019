@@ -10,8 +10,8 @@ resource "aws_instance" "example" {
 }
 
 resource "aws_key_pair" "deployer" {
-  key_name   = "macbook-pro-2018-15-inch"
-  public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC/6tid2po4rN0zcO4hUXmJeIWcoP2u8eGnpjmcGVGSg8V6hr7a9Iee0dMOi/hbhFiUT0NTh+tyaHBHwwIYCMyWhDtwyzOBv+Ss5HEcpx6niJQpxDLITCEQF8Sh+ELmaX8LvGo2QQw27QNUB4WARrQwiV9S/d9R0ApRlXnLO6+8BQk0F6ZGej3KXccTyzLGf0DTBlC9Nr3UHjf3H7kfetKOQqtpgZXhXTXgQYeaKZkLtbd9KywPrGCYpVsSXMlV6OGf77WCGzDAO9UmXZQpEaagS4LmoqWbcNNTsnj9rNT8pywIlrf9FpWDtQB5Z34xD2t/Y3G2sDp0VYSPgtYVqBoI9pntPwhTJDvMn+4fHJjZbsyLW3V74iyvjJHHSGAAMFdYwNZqA4jhIaum7wG4c495uyonUIirmnJ3+BcR3JhuydDXudsBpay09coaUUBWxQGahubhrgToV1TnxcY7kQknduL7RLA1+aLKZbQVecb5lgqA/0tmuOl+SOdGAZP+DaYxEpLddjiF8MFA/yZUjWahUj80cMJ2vMXibwtfQ1zH7XOpmWYEaJDi8GVuCj94+e5xERU4RAvszRAbB4I6Zac+LcOKdvVmhzc5aG2mlunFt2tOXxaYPGgBXjIhB+9pyNLnzmey+nGlpHQu4LK51j/cjXhozMDfEcBsZnJ7H/cACw== ng_yl88@hotmail.com"
+  key_name   = var.key_name
+  public_key = var.ssh_public_key
 }
 
 # Get default vpc so that we can access the instance
