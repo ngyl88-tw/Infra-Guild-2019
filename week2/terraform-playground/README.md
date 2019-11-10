@@ -18,7 +18,8 @@
 0. Setup `sensitive.tfvars`.
 ---
 #### Important Notes
-- Existing instances have to be destroyed and recreate whenever addition/modification of provisioner takes place.
+- Existing instances have to be destroyed and recreate whenever addition/modification of provisioner(s) takes place.
+    - eg. changes in `bootstrap.sh`
 - Use `ps aux | grep hello` to get the user who runs the process
 
 ---
