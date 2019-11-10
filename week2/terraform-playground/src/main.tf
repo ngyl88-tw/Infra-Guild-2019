@@ -1,5 +1,30 @@
+data "aws_ami" "example" {
+  most_recent      = true
+  owners           = ["099720109477"]
+
+  filter {
+    name   = "name"
+    values = ["ubuntu/*/ubuntu-bionic-18.04-*"]
+  }
+
+  filter {
+    name   = "architecture"
+    values = ["x86_64"]
+  }
+
+  filter {
+    name   = "root-device-type"
+    values = ["ebs"]
+  }
+
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
+}
+
 resource "aws_instance" "example" {
-  ami           = "ami-0c199cae95cea87f0"
+  ami           = data.aws_ami.example.id
   instance_type = "t2.micro"
   key_name      = aws_key_pair.provisioner.key_name # implicit depends_on for provisioner key
 
@@ -51,35 +76,4 @@ resource "tls_private_key" "provisioner" {
 resource "aws_key_pair" "provisioner" {
   key_name   = var.provisioner_key_name
   public_key = tls_private_key.provisioner.public_key_openssh
-}
-
-# Get default vpc so that we can access the instance
-data "aws_vpc" "default" {
-  default = true
-}
-
-data "aws_security_group" "default" {
-  vpc_id = data.aws_vpc.default.id
-}
-
-resource "aws_security_group_rule" "allow_ssh" {
-  type              = "ingress"
-  from_port         = 22
-  to_port           = 22
-  protocol          = "tcp"
-  security_group_id = data.aws_security_group.default.id
-
-  cidr_blocks = var.whitelisted_cidrs
-  description = "infra-guild-week2: allow SSH from Office and Home IP"
-}
-
-resource "aws_security_group_rule" "allow_http" {
-  type              = "ingress"
-  from_port         = 8080
-  to_port           = 8080
-  protocol          = "tcp"
-  security_group_id = data.aws_security_group.default.id
-
-  cidr_blocks = var.whitelisted_cidrs
-  description = "infra-guild-week2: allow http call from Office and Home IP"
 }

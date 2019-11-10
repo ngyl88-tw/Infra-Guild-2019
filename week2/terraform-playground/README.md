@@ -22,15 +22,32 @@
 - [X] create an EC2 in default vpc, ability to ssh
 - [X] provision EC2 with java and files, verify with ssh and `curl localhost:8080`
 - [X] expose ports, route traffic to the ec2
+- [X] use terraform `data-source` to retrieve AMI
 - [ ] try alternatives for provisioners?
 - [ ] move out from default vpc
 - [ ] 2-tier architecture?
 
 ---
-#### Important Notes
+#### Learning Notes
 - Existing instances have to be destroyed and recreate whenever addition/modification of provisioner(s) takes place.
     - eg. changes in `bootstrap.sh`
+
 - Use `ps aux | grep hello` to get the user who runs the process
+
+- EC2 commands to help filtering AMI
+    - index `-1` returns the most recent image
+
+    ```shell script
+        aws ec2 describe-images --query 'sort_by(Images, &CreationDate)[].Name' \
+            --owners '099720109477' \
+            --filters "Name=architecture,Values=x86_64" "Name=name,Values=ubuntu/*/ubuntu-bionic-18.04-*" \
+                "Name=root-device-type,Values=ebs" "Name=virtualization-type,Values=hvm"
+  
+        aws ec2 describe-images --query 'sort_by(Images, &CreationDate)[-1].{ID:ImageId, Name:Name}' \
+            --owners '099720109477' \
+            --filters "Name=architecture,Values=x86_64" "Name=name,Values=ubuntu/*/ubuntu-bionic-18.04-*" \
+                "Name=root-device-type,Values=ebs" "Name=virtualization-type,Values=hvm"
+    ```
 
 ---
 #### Terraform Commands
