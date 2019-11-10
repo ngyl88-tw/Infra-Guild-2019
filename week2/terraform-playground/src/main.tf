@@ -70,5 +70,16 @@ resource "aws_security_group_rule" "allow_ssh" {
   security_group_id = data.aws_security_group.default.id
 
   cidr_blocks = var.whitelisted_cidrs
-  description = "Allow SSH from Office and Home IP"
+  description = "infra-guild-week2: allow SSH from Office and Home IP"
+}
+
+resource "aws_security_group_rule" "allow_http" {
+  type              = "ingress"
+  from_port         = 8080
+  to_port           = 8080
+  protocol          = "tcp"
+  security_group_id = data.aws_security_group.default.id
+
+  cidr_blocks = var.whitelisted_cidrs
+  description = "infra-guild-week2: allow http call from Office and Home IP"
 }

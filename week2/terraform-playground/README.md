@@ -17,6 +17,16 @@
     ```
 0. Setup `sensitive.tfvars`.
 ---
+#### To-Dos
+
+- [X] create an EC2 in default vpc, ability to ssh
+- [X] provision EC2 with java and files, verify with ssh and `curl localhost:8080`
+- [X] expose ports, route traffic to the ec2
+- [ ] try alternatives for provisioners?
+- [ ] move out from default vpc
+- [ ] 2-tier architecture?
+
+---
 #### Important Notes
 - Existing instances have to be destroyed and recreate whenever addition/modification of provisioner(s) takes place.
     - eg. changes in `bootstrap.sh`
