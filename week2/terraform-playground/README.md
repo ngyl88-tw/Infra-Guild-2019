@@ -29,8 +29,16 @@
 
 ---
 #### Learning Notes
-- Existing instances have to be destroyed and recreate whenever addition/modification of provisioner(s) takes place.
-    - eg. changes in `bootstrap.sh`
+- Built-in provisioner (to be used with cautions)
+    - Existing instances have to be destroyed and recreate whenever addition/modification of provisioner(s) takes place, eg. changes in `bootstrap.sh` 
+    - Terraform might not be aware when `remote-exec` fails
+        - Explicit command `set -e` is required in `remote-exec` for the `aws_instance` to be marked as tainted.
+        - `set -o pipefail` in `bootstrap.sh` doesn't make any difference as long as `set -e` is defined inline in `remote-exec`.
+        - `remote-exec` seems not supporting `set -o pipefail`
+        - Otherwise, have to be fixed by `manual taint` or `terraform destroy`.
+    - When `remote-exec` fails, `terraform output` is not yet updated. Use console to get the public ip.
+    - Also not recommended for the following reasons:
+        - separation of provisioning (vm, machine) vs configuration management (software downloads, app)
 
 - Use `ps aux | grep hello` to get the user who runs the process
 
@@ -83,6 +91,7 @@
         - without the need to access the machine over SSH
         - can make use of the `user data` or `metadata` if building custom machine images
         - allow faster boot by avoiding the need for direct network access from Terraform to the new server
+        - some useful log location: logs under `/var/log/cloud-init.log` and `/var/log(s)/user-data.log` if can ssh into the machine.
     - HashiCorp Packer
         - custom image could be used with `user data` so that to pass the necessary information into each instance
         - instances can register itself with the configuration management server immediately on boot

@@ -57,6 +57,7 @@ resource "aws_instance" "example" {
   # reconfigure ssh permissions: remove provisioner key and setup authorized_keys
   provisioner "remote-exec" {
     inline = [
+      "set -xe",
       "chmod g+x /tmp/init/bootstrap.sh",
       "sudo /tmp/init/bootstrap.sh",
       "echo ${var.ssh_public_key} > /home/ubuntu/.ssh/authorized_keys"
