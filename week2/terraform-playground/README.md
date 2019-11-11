@@ -8,7 +8,7 @@
         asdf install terraform 0.12.13
     ```
 
-0. Setup your environment variables
+0. Setup your environment variables, or use `aws_profile` in `default.tfvars`.
 
     ```shell script
         export AWS_ACCESS_KEY_ID=<AWS_ACCESS_KEY_ID>

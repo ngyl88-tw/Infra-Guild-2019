@@ -1,3 +1,8 @@
+variable "aws_profile" {
+  type    = string
+  default = null
+}
+
 variable "provisioner_key_name" {
   type    = string
 }

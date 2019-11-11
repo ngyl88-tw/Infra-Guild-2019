@@ -4,6 +4,7 @@ data "aws_vpc" "default" {
 
 data "aws_security_group" "default" {
   vpc_id = data.aws_vpc.default.id
+  name = "default"
 }
 
 resource "aws_security_group_rule" "allow_ssh" {
