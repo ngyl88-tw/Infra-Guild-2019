@@ -100,10 +100,15 @@
         - can avoid the need to accept commands from Terraform
 ---
 #### Using saml2aws
+Ref: https://github.com/emmasun-tw/infra101/blob/master/week2/saml2aws.md
+
 After login, update variable `aws_profile` in `default.tfvars`.
 
 ```shell script
     saml2aws configure
     saml2aws login
 ```
+
+saml2aws configure with profile `okta-beach`.
+
 ---
