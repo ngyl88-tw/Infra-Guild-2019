@@ -25,6 +25,8 @@
 - [X] use terraform `data-source` to retrieve AMI
 - [ ] try alternatives for provisioners?
 - [ ] move out from default vpc
+    - Need to create public subnet, internet
+    - Update `aws_instance` in `main.tf` to deploy in correct subnet?
 - [ ] 2-tier architecture?
 
 ---
@@ -96,3 +98,12 @@
         - custom image could be used with `user data` so that to pass the necessary information into each instance
         - instances can register itself with the configuration management server immediately on boot
         - can avoid the need to accept commands from Terraform
+---
+#### Using saml2aws
+After login, update variable `aws_profile` in `default.tfvars`.
+
+```shell script
+    saml2aws configure
+    saml2aws login
+```
+---
