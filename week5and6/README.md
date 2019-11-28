@@ -70,4 +70,11 @@
 10. A new version of `MeowApplication` has just been released! Update your Deployment to use this new image version (`janesee3/meow-application:2`)
     - Aaand of course there're some errors and now your Pods are crashing. How can we rollback your deployment to the older working version?
 
+    [X] `kubectl set image deployment/meow-deployment meow=janesee3/meow-application:2 [--record=true]`
+    [X] `kubectl rollout history deployment/meow-deployment`
+        - output: { REVISION,  CHANGE-CAUSE }
+        - CHANGE-CAUSE will be populated with `kubectl set image` when running with `--record=true` option 
+    [X] `kubectl rollout undo deployment/meow-deployment [--to-revision=1]`
+    [X] `kubectl rollout status -w deployment/meow-deployment` # watch the status of the latest rollout
 ---
+## Week 6
