@@ -36,9 +36,13 @@
 
 7. Now that you have multiple Pods for `CatApplication`, let's try to hit the `/cats` endpoint again. 
    - How should we choose which Pod's endpoint to hit?
-        [] Use `Service` resource? 
    - Since we learnt from `disaster.sh` that Pods may come and go unexpectedly, how can we let Kubernetes help us decide which `CatApplication` Pod to route our request to so that we can reliably get the response that we need?
-   - **Hint** - Refer [here](https://kubernetes.io/docs/concepts/services-networking/connect-applications-service/#creating-a-service) for spec reference 
+   - **Hint** - Refer [here](https://kubernetes.io/docs/concepts/services-networking/connect-applications-service/#creating-a-service) for spec reference
+   
+   [X] Use `Service` resource?
+        - Kubernetes `ServiceTypes` defaults to `ClusterIP`, if not specified.  
+        - By default, the targetPort is set to the same value as the port field.
+        - Value `ClusterIP` makes the Service only reachable from within the cluster. Need `port-forwarding`.
 
 8. Deploy `MeowApplication` in the same way you did for `CatApplication` 
    - Notice that the Pods for `MeowApplication` do not start up healthily. How can you debug why the Pods are not starting up correctly?
