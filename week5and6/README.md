@@ -48,6 +48,9 @@
    - Notice that the Pods for `MeowApplication` do not start up healthily. How can you debug why the Pods are not starting up correctly?
    - The Pods are crashing because it is missing a required environment variable configuration `DO_YOU_LIKE_CATS`. How can we add this configuration in?
      - *Even though we can add the env var when we build application or image, for environment specific variables, we should aim to only configure them at the point of deployment.*
+     
+   [X] Duplicate resources to try deployment of `MeowApplication` 
+   [] Check if MeowApplication healthy, why crash??
 
 9.  `MeowApplication` has an endpoint `/meow` on port `8080`. It works by first calling `CatApplication` internally for the list of cats and then processing their meows.
     - Test out the `/meow` endpoint and debug the problem
