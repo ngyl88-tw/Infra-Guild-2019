@@ -50,7 +50,10 @@
      - *Even though we can add the env var when we build application or image, for environment specific variables, we should aim to only configure them at the point of deployment.*
      
    [X] Duplicate resources to try deployment of `MeowApplication` 
-   [] Check if MeowApplication healthy, why crash??
+   [X] Check if MeowApplication healthy, why crash??
+        - Pod status `CrashLoopBackOff`, default restarts 4 times. Run `kubectl describe <POD_NAME>` to inspect.
+        - To debug, run `kubectl logs -f <POD_NAME>`.
+   [] Update env in pod spec
 
 9.  `MeowApplication` has an endpoint `/meow` on port `8080`. It works by first calling `CatApplication` internally for the list of cats and then processing their meows.
     - Test out the `/meow` endpoint and debug the problem

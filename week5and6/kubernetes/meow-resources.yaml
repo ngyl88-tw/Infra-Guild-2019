@@ -5,7 +5,7 @@
 # spec:
 #   containers:
 #     - name: meow
-#       image: janesee3/cat-application:1
+#       image: janesee3/meow-application:1
 
 ---
 apiVersion: apps/v1
