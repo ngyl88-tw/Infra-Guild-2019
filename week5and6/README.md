@@ -20,12 +20,17 @@
 
 5. `CatApplication` is serving an endpoint `/cats` on port `8080`. How can we hit this endpoint from your local machine?
    - There are many ways to do this, but for this step, use the simplest approach without creating any new K8S resource
-   [] 
+   [X] `kubectl port-forward pod/meow 8080`
 
 6. Run the `disaster.sh` script.
    - Oh no! Disaster struck! Your pod has mysteriously disappeared! If this was a public application, millions of cat lovers would be really sad because they can't see cats now.
    - We need to prevent this from happening! What should we deploy to the cluster to ensure that the `CatApplication` Pods can be **highly available** - has more than one Pod and at least one Pod is up at all times?
    - **Hint** - Refer [here](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#creating-a-deployment) for spec reference 
+   
+   [X] `curl https://raw.githubusercontent.com/Thoughtworks-SEA-Capability/Infrastructure-101-Pathway/master/week5/disaster.sh --output disaster.sh`
+   [X] `chmod u+x disaster.sh`
+   [X] `./disaster.sh`
+   [] Change `Pod` resources to `Deployment` resources
 
 7. Now that you have multiple Pods for `CatApplication`, let's try to hit the `/cats` endpoint again. 
    - How should we choose which Pod's endpoint to hit? 
