@@ -27,6 +27,11 @@ spec:
       containers:
         - name: meow
           image: janesee3/meow-application:1
+          env:
+            - name: DO_YOU_LIKE_CATS
+              value: "it depends"
+            - name: CATS_URL
+              value: "http://cat-service:8080/cats"
 ---
 apiVersion: v1
 kind: Service

@@ -53,12 +53,20 @@
    [X] Check if MeowApplication healthy, why crash??
         - Pod status `CrashLoopBackOff`, default restarts 4 times. Run `kubectl describe <POD_NAME>` to inspect.
         - To debug, run `kubectl logs -f <POD_NAME>`.
-   [] Update env in pod spec
+   [X] Update env in `Deployment` pod spec `containers[*].spec`.
 
 9.  `MeowApplication` has an endpoint `/meow` on port `8080`. It works by first calling `CatApplication` internally for the list of cats and then processing their meows.
     - Test out the `/meow` endpoint and debug the problem
     - For ease of testing, can we try out `curl` commands from within a `MeowApplication` Pod to see what works?
-
+    
+    [X] `kubectl port-forward service/meow-service 8081` and `curl localhost:8081/meow`
+        - To list existing environment variables in pod, run `kubectl exec -it <MEOW_POD> env`
+        - To check runtime env injection: `kubectl set env deployment/meow-deployment --list`
+    [X] Fixes by rolling update
+        - `kubectl set env deployment/meow-deployment CATS_URL=http://cat-service:8080/cats`
+        - will see `Error: No such container` in existing port-forwarding, restart the service
+    [X] Update env in `Deployment` pod spec, add `CATS_URL` in `containers[*].spec`
+   
 10. A new version of `MeowApplication` has just been released! Update your Deployment to use this new image version (`janesee3/meow-application:2`)
     - Aaand of course there're some errors and now your Pods are crashing. How can we rollback your deployment to the older working version?
 
