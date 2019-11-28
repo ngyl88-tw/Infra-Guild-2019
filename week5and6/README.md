@@ -30,10 +30,13 @@
    [X] `curl https://raw.githubusercontent.com/Thoughtworks-SEA-Capability/Infrastructure-101-Pathway/master/week5/disaster.sh --output disaster.sh`
    [X] `chmod u+x disaster.sh`
    [X] `./disaster.sh`
-   [] Change `Pod` resources to `Deployment` resources
+   [X] Change `Pod` resources to `Deployment` resources
+   [X] `kubectl apply -f kubernetes/`
+   [X] Use `kubectl describe deployment/meow-deployment` to inspect `Replicas` and `StrategyType`
 
 7. Now that you have multiple Pods for `CatApplication`, let's try to hit the `/cats` endpoint again. 
-   - How should we choose which Pod's endpoint to hit? 
+   - How should we choose which Pod's endpoint to hit?
+        [] Use `Service` resource? 
    - Since we learnt from `disaster.sh` that Pods may come and go unexpectedly, how can we let Kubernetes help us decide which `CatApplication` Pod to route our request to so that we can reliably get the response that we need?
    - **Hint** - Refer [here](https://kubernetes.io/docs/concepts/services-networking/connect-applications-service/#creating-a-service) for spec reference 
 
