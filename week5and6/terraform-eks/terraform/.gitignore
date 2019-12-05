@@ -1,0 +1,8 @@
+.envrc
+
+.terraform/
+**/*.tfstate*
+terraform.tfplan
+.terraform.tfstate.lock.info
+
+config/sensitive.tfvars

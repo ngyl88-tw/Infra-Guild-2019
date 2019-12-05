@@ -78,3 +78,10 @@
     [X] `kubectl rollout status -w deployment/meow-deployment` # watch the status of the latest rollout
 ---
 ## Week 6
+
+0. Spin up VPC, EKS
+    [X] Verify by running `aws eks --region region update-kubeconfig --name cluster_name` and `kubectl get nodes`
+1. Creating a Helm chart
+    [] CatApplication
+    [] MeowApplication
+2. 
