@@ -98,17 +98,31 @@
    In Helm 2, there is a server-side component known as `Tiller`, which is to be installed in the kubernetes cluster you're working on. However, in Helm 3, they've removed the need for a server-side component, so you do not have to bother youself much with Tiller moving forward.
    Simply follow the steps below to initialise `helm` with Tiller, and move on to the next step!
 
-   [] Download / copy the contents of the [`helm/helm-rbac.yaml`](./helm/helm-rbac.yaml) into your machine.
-   [] Run `kubectl apply -f helm-rbac.yaml` to install the required K8S ServiceAccount for the Tiller component that will be running in your cluster.
-   [] Run `helm init --service-account=tiller`
+   [X] Initialise `helm` with Tiller
    [] See [here](https://devopscube.com/install-configure-helm-kubernetes/) if you want to understand more about this init process!
+
+    ```shell script
+      curl -o helm-rbac.yaml https://raw.githubusercontent.com/Thoughtworks-SEA-Capability/Infrastructure-101-Pathway/master/week6/helm/helm-rbac.yaml
+      kubectl apply -f helm-rbac.yaml
+      helm init --service-account=tiller
+    ```
 
 3. Install `CatApplication` and `MeowApplication` as Helm releases into the cluster.
    **Tip:** See [here](https://v2.helm.sh/docs/helm/#helm-install) for information about the `helm install` command.
    **Bonus**: What flags can you add to the `helm install` command to ensure that `helm` will rollback whatever resources that were created in the event that the deployment was unsuccessful? (eg. Pods not starting up healthily) 
    - You may have noticed that the `readinessProbe` setting is configured for the Pods. This means that we no longer have to manually call the `/meow` or `/cats` endpoint ourselves to check for the Pod's health; we can just rely on the Pod's `READY` metric.
 
-   [] Helm installs
+   [X] Helm installs
+    - Notes: run `helm delete --purge <release_name>` to delete unwanted releases
+    - Notes: `helm delete <release_name>` won't delete the history of the helm releases
+
+    ```shell script
+        helm upgrade --install cat-application cat-application
+        helm upgrade --install --atomic meow-application meow-application
+    ```
+    [] To fix env var for `meow-application`
+    [] Deployment `meow-application` is having incorrect status `DEPLOYED` when pod status is `CrashLoopBackOff` without env var set, thus no rollback take place.
+    [] Notes: To find out what this is... `helm rollback --cleanup-on-fail`
 
 4. Yay! `CatApplication` and `MeowApplication` is now running on the cloud! Now, we could hit the `/meow` endpoint using the `port-forward` method last week, but since we're running on the cloud now, how can we expose these endpoints to the internet?
 
