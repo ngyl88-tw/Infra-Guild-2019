@@ -9,7 +9,7 @@
    - You may want to temporarily increase the Memory and CPU allocated for Docker for better performance: `Preferences` > `Advanced`
 
 2. How can configure your local `kubectl` to point to this newly created cluster?
-    [X] `kubectl set-context`
+    [X] `kubectl config set-context`
    
 3. Now that `kubectl` is pointing to your cluster, what command can you use to check that the cluster indeed has node(s) connected?
     [X] `kubectl get nodes`
@@ -79,14 +79,65 @@
 ---
 ## Week 6
 
+#### Steps
+
 0. Spin up VPC, EKS
     [X] Verify by running `aws eks --region region update-kubeconfig --name cluster_name` and `kubectl get nodes`
+
 1. Creating a Helm chart
-    [] CatApplication
-    [] MeowApplication
+    [X] CatApplication
+    [X] MeowApplication
     
     - Running `helm create meow-application` will create 
         - `values.yaml` with a bunch of defaulted values
         - ingress and service
         - deployment containers with livenessProbe
-2. 
+
+2. Initialise helm in your EKS cluster
+
+   In Helm 2, there is a server-side component known as `Tiller`, which is to be installed in the kubernetes cluster you're working on. However, in Helm 3, they've removed the need for a server-side component, so you do not have to bother youself much with Tiller moving forward.
+   Simply follow the steps below to initialise `helm` with Tiller, and move on to the next step!
+
+   [] Download / copy the contents of the [`helm/helm-rbac.yaml`](./helm/helm-rbac.yaml) into your machine.
+   [] Run `kubectl apply -f helm-rbac.yaml` to install the required K8S ServiceAccount for the Tiller component that will be running in your cluster.
+   [] Run `helm init --service-account=tiller`
+   [] See [here](https://devopscube.com/install-configure-helm-kubernetes/) if you want to understand more about this init process!
+
+3. Install `CatApplication` and `MeowApplication` as Helm releases into the cluster.
+   **Tip:** See [here](https://v2.helm.sh/docs/helm/#helm-install) for information about the `helm install` command.
+   **Bonus**: What flags can you add to the `helm install` command to ensure that `helm` will rollback whatever resources that were created in the event that the deployment was unsuccessful? (eg. Pods not starting up healthily) 
+   - You may have noticed that the `readinessProbe` setting is configured for the Pods. This means that we no longer have to manually call the `/meow` or `/cats` endpoint ourselves to check for the Pod's health; we can just rely on the Pod's `READY` metric.
+
+   [] Helm installs
+
+4. Yay! `CatApplication` and `MeowApplication` is now running on the cloud! Now, we could hit the `/meow` endpoint using the `port-forward` method last week, but since we're running on the cloud now, how can we expose these endpoints to the internet?
+
+   First, we need to setup a Load Balancer on AWS to receive traffic from the internet and propagate them to the K8S worker nodes accordingly. Next, we need to write routing rules so that we can provide a mapping between the URL paths and our K8S Services.
+
+   Lucky for us, an `Ingress Controller` is what we need to achieve this! There are many Ingress Controllers out there, but for today, we will be using the NGINX Ingress Controller. See here for more information about
+
+   Using the [`nginx-ingress-controller`](https://github.com/helm/charts/tree/master/stable/nginx-ingress) Helm chart, install an ingress controller in your cluster
+   - **Tip:** Refer to [this documentation](https://kubernetes.github.io/ingress-nginx/user-guide/basic-usage/) for guide
+   - **Tip:** You can use `helm get manifest <release-name>` command to check what K8S resources were created for that release.
+   - How can you check what Load Balancer URL has been provisioned for you after the installation? Remember that we can provision an AWS Load Balancer for the EKS cluster by creating a K8S Service with type `LoadBalancer`.
+  
+5. Next, write the routing rules that will be consumed by the Ingress Controller.
+   - **Tip:** These routing rules are actually a type of K8S resource, called `Ingress`. See [here](https://kubernetes.io/docs/concepts/services-networking/ingress/#types-of-ingress) and [here](https://www.youtube.com/watch?v=VicH6KojwCI) for more information!
+   - **Tip:** We want to create TWO separate `Ingress` resources, one each for the `CatApplication` and `MeowApplication`, so as to achieve **host-based routing** for the `/meow` and `/cats` endpoints. See [here](https://kubernetes.io/docs/tasks/access-application-cluster/ingress-minikube/) for reference.
+   - **Tip:** Where should the `Ingress` YAML files be stored in, and how can they be applied to the cluster? See [here](https://v2.helm.sh/docs/helm/#helm-upgrade) for reference.
+   - Test that your Ingress resources are correct with `curl` or accesing the endpoint directly from the browser! 
+
+6. How can we deploy the `CatApplication` and `MeowApplication` in a LOCAL kubernetes cluster by reusing the same Helm charts?
+   - **Requirements for the local deployment:**
+      1. No `Ingress` resources are required, since we will not have an Ingress Controller for a local cluster
+      2. `CatApplication` will be using the image `janesee3/cat-application:local`
+   - If you haven't already, start up a local Kubernetes cluster using Docker Desktop. Remember to configure your `kubectl` to point to the local cluster afterwards!
+   - **Tip:** You will need to create a separate Helm values file (eg. `local-cluster.yaml`)
+   
+
+### Extra Activities
+
+1. How can we decouple the configurations for application environment variables from the `Deployment` YAML template, and move them to the `values.yaml` file instead?
+   - In doing so, we can easily configure different env vars for the Helm release by switching out a different values file.
+
+2. Try to secure the LoadBalancer URL provisioned by the NGINX Ingress Controller with basic authentication by following this guide [here](https://kubernetes.github.io/ingress-nginx/examples/auth/basic/)
