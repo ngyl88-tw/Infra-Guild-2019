@@ -6,3 +6,6 @@ terraform.tfplan
 .terraform.tfstate.lock.info
 
 config/sensitive.tfvars
+
+config-map-aws-auth_infra-guild-yl.yaml
+kubeconfig_*
