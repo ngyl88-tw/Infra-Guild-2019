@@ -84,4 +84,9 @@
 1. Creating a Helm chart
     [] CatApplication
     [] MeowApplication
+    
+    - Running `helm create meow-application` will create 
+        - `values.yaml` with a bunch of defaulted values
+        - ingress and service
+        - deployment containers with livenessProbe
 2. 

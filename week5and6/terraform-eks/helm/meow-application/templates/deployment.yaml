@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "meow-application.fullname" . }}
+  labels:
+{{ include "meow-application.labels" . | indent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "meow-application.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "meow-application.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      containers:
+        # `.Chart` is a special Helm Built-in Object.
+        # See https://helm.sh/docs/topics/chart_template_guide/builtin_objects/
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}"

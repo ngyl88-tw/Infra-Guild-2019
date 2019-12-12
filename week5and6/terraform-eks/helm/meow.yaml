@@ -1,0 +1,30 @@
+---
+# Source: meow-application/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: release-name-meow-application
+  labels:
+    app.kubernetes.io/name: meow-application
+    helm.sh/chart: meow-application-0.1.0
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/version: "1.0"
+    app.kubernetes.io/managed-by: Tiller
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: meow-application
+      app.kubernetes.io/instance: release-name
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: meow-application
+        app.kubernetes.io/instance: release-name
+    spec:
+      containers:
+        # `.Chart` is a special Helm Built-in Object.
+        # See https://helm.sh/docs/topics/chart_template_guide/builtin_objects/
+        - name: meow-application
+          image: "janesee3/meow-application:1"
+
