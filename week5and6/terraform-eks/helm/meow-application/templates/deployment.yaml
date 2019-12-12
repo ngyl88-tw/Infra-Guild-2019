@@ -21,3 +21,8 @@ spec:
         # See https://helm.sh/docs/topics/chart_template_guide/builtin_objects/
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}"
+          env:
+            - name: DO_YOU_LIKE_CATS
+              value: "it depends"
+            - name: CATS_URL
+              value: "http://cat-service:8080/cats"

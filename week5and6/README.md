@@ -120,7 +120,8 @@
         helm upgrade --install cat-application cat-application
         helm upgrade --install --atomic meow-application meow-application
     ```
-    [] To fix env var for `meow-application`
+    [X] To fix env var for `meow-application`
+    [] Parameterized env var in `meow-application/deployment.yaml`
     [] Deployment `meow-application` is having incorrect status `DEPLOYED` when pod status is `CrashLoopBackOff` without env var set, thus no rollback take place.
     [] Notes: To find out what this is... `helm rollback --cleanup-on-fail`
 
