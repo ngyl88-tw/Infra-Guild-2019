@@ -64,7 +64,13 @@ module "eks" {
     }
   ]
 
-  kubeconfig_aws_authenticator_env_variables = {
-    AWS_PROFILE = var.aws_profile
-  }
+  kubeconfig_aws_authenticator_command = "aws"
+  kubeconfig_aws_authenticator_command_args = [
+    "eks",
+    "get-token",
+    "--cluster-name",
+    local.cluster_name,
+    "--profile",
+    var.aws_profile
+  ]
 }
